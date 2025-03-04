@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-center align-items-center">
+    <div style="max-width: 400px; width: 100%;">
+        <div class="card-body">
+            <h2 class="mb-3 text-center">Login</h2>
+            <form method="post" action="{% url 'account_login' %}">
+                {% csrf_token %}
+                {{ form.non_field_errors }}
+                <div class="mb-3">
+                    {% render_field form.login|add_label_class:"form-label" %}
+                    {{ form.login.errors }}
+                    {% render_field form.login class="form-control" placeholder="Enter your email address" %}
+                    <div id="login-errors" class="text-danger"></div>
+                </div>
+                <div class="mb-3">
+                    {% render_field form.password|add_label_class:"form-label" %}
+                    {{ form.password.errors }}
+                    {% render_field form.password class="form-control" placeholder="Enter your password" %}
+                    <div id="password-errors" class="text-danger"></div>
+                    <a href="{% url 'account_reset_password' %}" class="d-block mt-2 text-decoration-none small">Forgot Password?</a>
+                </div>
+                <div class="mb-3 form-check">
+                    {% render_field form.remember class="form-check-input" %}
+                    {% render_field form.remember|add_label_class:"form-check-label" %}
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Login</button>
+            </form>
+            <hr class="mt-4">
+            <div class="d-flex align-items-center justify-content-center my-3">
+                <span class="px-3 text-muted">Or login with</span>
+            </div>
+            {% load socialaccount %}
+            <div class="d-flex flex-column flex-md-row justify-content-center gap-2 mt-3">
+                <form method="post" action="{% provider_login_url 'google' %}" class="col-12 col-md-5">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-outline-secondary text-dark w-100">
+                        <i class="bi bi-google"></i> Google
+                    </button>
+                </form>
+                <form method="post" action="{% provider_login_url 'github' %}" class="col-12 col-md-5">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-outline-secondary text-dark w-100">
+                        <i class="bi bi-github"></i> Github
+                    </button>
+                </form>
+            </div>
+            <div class="text-center">
+              Don't have an account? <a href="{% url 'account_signup' %}" class="text-decoration-none">Register now</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

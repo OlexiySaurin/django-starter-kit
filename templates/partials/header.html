@@ -1,0 +1,61 @@
+<header>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light p-3 mb-3 border-bottom">
+        <div class="container">
+            <a class="navbar-brand" href="#">Django Project</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+{#                    <li class="nav-item">#}
+{#                        <a class="nav-link" href="#">Home</a>#}
+{#                    </li>#}
+{#                    <li class="nav-item">#}
+{#                        <a class="nav-link" href="#">About</a>#}
+{#                    </li>#}
+{#                    <li class="nav-item">#}
+{#                        <a class="nav-link" href="#">Contact</a>#}
+{#                    </li>#}
+                </ul>
+
+                <!-- User Authentication -->
+                <div class="d-flex align-items-center">
+                    {% if user.is_authenticated %}
+                        <div class="dropdown">
+                            <a class="d-flex align-items-center text-dark fw-bold text-decoration-none dropdown-toggle"
+                                href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+
+                                {% if user.avatar %}
+                                    <img src="{{ user.avatar.url }}" class="rounded-circle me-2 border border-dark"
+                                         style="width: 40px; height: 40px;" alt="User Avatar">
+                                {% else %}
+                                    <div class="d-flex align-items-center justify-content-center border border-dark rounded-circle text-white me-2"
+                                         style="background-color: {{ user.color }}; width: 40px; height: 40px;">
+                                        <span class="fw-bold">{{ user.first_name|first|upper }}{{ user.last_name|first|upper }}</span>
+                                    </div>
+                                {% endif %}
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                <li><span class="dropdown-item fw-bold">@{{ user.username }}</span></li>
+                                <li><span class="dropdown-item text-muted mb-3">{{ user.email }}</span></li>
+                                <li><a class="dropdown-item" href="{% url 'profile' %}">Profile</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <form method="post" action="{% url 'account_logout' %}">
+                                        {% csrf_token %}
+                                        <button type="submit" class="dropdown-item">Logout</button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </div>
+                    {% else %}
+                        <a class="btn btn-outline-primary me-2" href="{% url 'account_login' %}">Login</a>
+                        <a class="btn btn-primary" href="{% url 'account_signup' %}">Sign Up</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+</header>

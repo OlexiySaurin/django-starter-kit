@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+
+{% block title %}Sign Up{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-center align-items-center">
+    <div style="max-width: 400px; width: 100%;">
+        <div class="card-body">
+            <h2 class="mb-3 text-center">Sign Up</h2>
+            <form method="post" action="{% url 'account_signup' %}">
+                {% csrf_token %}
+                {{ form.non_field_errors }}
+                <div class="mb-3">
+                    {% render_field form.username|add_label_class:"form-label" %}
+                    {{ form.username.errors }}
+                    {% render_field form.username class="form-control" hx-post="/check-username/" hx-trigger="keyup changed delay:500ms" hx-target="#username-error" %}
+                    <div id="username-error"></div>
+                </div>
+                <div class="mb-3">
+                    {% render_field form.email|add_label_class:"form-label" %}
+                    {{ form.email.errors }}
+                    {% render_field form.email class="form-control" %}
+                    <div id="email-error"></div>
+                </div>
+                <div class="mb-3">
+                    {% render_field form.password1|add_label_class:"form-label" %}
+                    {{ form.password1.errors }}
+                    {% render_field form.password1 class="form-control" %}
+                    <small class="small text-muted">
+                        {{ form.password1.help_text }}
+                    </small>
+                </div>
+                <div class="mb-3">
+                    {% render_field form.password2|add_label_class:"form-label" %}
+                    {{ form.password2.errors }}
+                    {% render_field form.password2 class="form-control" placeholder="Confirm your password" hx-post="/check-password/" hx-trigger="keyup" hx-target="#password-error" %}
+                    <div id="password-error"></div>
+                </div>
+                <button id="submitBtn" type="submit" class="btn btn-primary w-100">Sign Up</button>
+            </form>
+            <hr class="mt-4">
+            <div class="d-flex align-items-center justify-content-center my-3">
+                <span class="px-3 text-muted">Or sign up with</span>
+            </div>
+            {% load socialaccount %}
+            <div class="d-flex flex-column flex-md-row justify-content-center gap-2 mt-3">
+                <form method="post" action="{% provider_login_url 'google' %}" class="col-12 col-md-5">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-outline-secondary text-dark w-100">
+                        <i class="bi bi-google"></i> Google
+                    </button>
+                </form>
+                <form method="post" action="{% provider_login_url 'github' %}" class="col-12 col-md-5">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-outline-secondary text-dark w-100">
+                        <i class="bi bi-github"></i> Github
+                    </button>
+                </form>
+            </div>
+            <div class="text-center">
+              Already have an account? <a href="{% url 'account_login' %}" class="text-decoration-none">Login</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+const usernameField = document.getElementById('id_username');
+const emailField = document.getElementById('id_email');
+const passwordField = document.getElementById('id_password2');
+const submitBtn = document.getElementById('submitBtn');
+
+const usernameError = document.getElementById('username-error');
+const emailError = document.getElementById('email-error');
+const passwordError = document.getElementById('password-error');
+
+let usernameValid = true, passwordValid = true;
+document.body.addEventListener('htmx:afterRequest', function(event) {
+    // username exists check
+    if (event.detail.target.id === 'username-error') {
+
+        if (usernameError.innerHTML.includes("text-success")) {
+            usernameField.classList.remove('is-invalid');
+            usernameField.classList.add('is-valid');
+            usernameValid = true;
+        } else if (usernameError.innerHTML.includes("text-danger")) {
+            usernameField.classList.remove('is-valid');
+            usernameField.classList.add('is-invalid');
+            usernameValid = false;
+        } else {
+            usernameField.classList.remove('is-valid');
+            usernameField.classList.remove('is-invalid');
+        }
+    }
+    // password confirmation check
+    else if (event.detail.target.id === 'password-error') {
+        if (passwordError.innerHTML.includes("text-danger")) {
+            passwordField.classList.remove('is-valid');
+            passwordField.classList.add('is-invalid');
+            passwordValid = false;
+        } else {
+            passwordField.classList.remove('is-invalid');
+            passwordField.classList.add('is-valid');
+            passwordValid = true;
+        }
+    }
+
+    submitBtn.disabled = !(usernameValid && passwordValid);
+});
+</script>
+{% endblock %}
