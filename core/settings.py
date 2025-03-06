@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-yem8qy0l(vui^k=9ln)94fklei(g%#6*7^vs=f@2w517dt(o20
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
 
 INTERNAL_IPS = [
     "127.0.0.1",
@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     "debug_toolbar",
+    'crispy_forms',
+    'crispy_bootstrap5',
 
     'allauth',
     'allauth.account',
@@ -51,6 +53,9 @@ INSTALLED_APPS = [
 
     'users.apps.UsersConfig',
 ]
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',

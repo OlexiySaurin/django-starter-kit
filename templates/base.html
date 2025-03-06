@@ -26,6 +26,9 @@
 <div class="container">
     {% block content %}
     {% endblock %}
+<div class="mt-2">
+  Back to <a href="{% url 'index' %}" class="text-decoration-none">Home page</a>
+</div>
 </div>
 {% include 'partials/footer.html' %}
 <script>

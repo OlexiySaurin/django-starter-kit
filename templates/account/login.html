@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load widget_tweaks %}
+{% load crispy_forms_tags %}
 
 {% block title %}Login{% endblock %}
 
@@ -10,24 +11,7 @@
             <h2 class="mb-3 text-center">Login</h2>
             <form method="post" action="{% url 'account_login' %}">
                 {% csrf_token %}
-                {{ form.non_field_errors }}
-                <div class="mb-3">
-                    {% render_field form.login|add_label_class:"form-label" %}
-                    {{ form.login.errors }}
-                    {% render_field form.login class="form-control" placeholder="Enter your email address" %}
-                    <div id="login-errors" class="text-danger"></div>
-                </div>
-                <div class="mb-3">
-                    {% render_field form.password|add_label_class:"form-label" %}
-                    {{ form.password.errors }}
-                    {% render_field form.password class="form-control" placeholder="Enter your password" %}
-                    <div id="password-errors" class="text-danger"></div>
-                    <a href="{% url 'account_reset_password' %}" class="d-block mt-2 text-decoration-none small">Forgot Password?</a>
-                </div>
-                <div class="mb-3 form-check">
-                    {% render_field form.remember class="form-check-input" %}
-                    {% render_field form.remember|add_label_class:"form-check-label" %}
-                </div>
+                {% crispy form %}
                 <button type="submit" class="btn btn-primary w-100">Login</button>
             </form>
             <hr class="mt-4">

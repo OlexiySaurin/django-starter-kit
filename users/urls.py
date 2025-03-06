@@ -5,6 +5,7 @@ from . import views
 urlpatterns = [
     path('', views.index, name='index'),
     path('accounts/profile/', views.profile_page, name='profile'),
+    path('accounts/send-verification/', views.send_verification, name='send-verification'),
 ]
 
 htmx_urlpatterns = [

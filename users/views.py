@@ -1,8 +1,9 @@
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.http import require_http_methods
-
+from allauth.account.utils import send_email_confirmation
 from users.forms import UserForm
 from users.models import User
 
@@ -38,3 +39,11 @@ def check_password(request):
     if password1 == password2:
         return HttpResponse('')
     return HttpResponse('<span class="text-danger">Passwords not match</span>')
+
+@login_required
+def send_verification(request):
+    user = request.user
+    if user.is_verified:
+        return redirect('profile')
+    send_email_confirmation(request, user)
+    return redirect('profile')
