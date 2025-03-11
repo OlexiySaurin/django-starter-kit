@@ -1,0 +1,20 @@
+<ul class="list-group">
+     {% for user in users %}
+    <li class="list-group-item">
+        <a class="text-center text-decoration-none text-dark">
+            <div class="d-flex align-items-center justify-content-center">
+                {% if user.avatar %}
+                <img src="{{ user.avatar.url }}" alt="Profile Picture" class="img-fluid rounded-circle border border-secondary mt-1 mb-1" width="27">
+            {% else %}
+                <span class="fs-4"><i class="bi bi-person-circle"></i></span>
+            {% endif %}
+                <span class="ms-2">{{ user.username }}</span>
+            </div>
+
+        </a>
+    </li>
+    {% empty %}
+    <li class="list-group-item">No users found.</li>
+    {% endfor %}
+</ul>
+

@@ -47,3 +47,14 @@ def send_verification(request):
         return redirect('profile')
     send_email_confirmation(request, user)
     return redirect('profile')
+
+
+def search(request):
+    query = request.GET.get('q')
+    if not query:
+        return HttpResponse("")
+    users = User.objects.filter(username__icontains=query, is_private=False)
+    context = {
+        'users': users
+    }
+    return render(request, 'users/search.html', context)

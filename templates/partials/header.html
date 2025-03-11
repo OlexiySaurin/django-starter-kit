@@ -22,6 +22,14 @@
 
                 <!-- User Authentication -->
                 <div class="d-flex align-items-center">
+                    <div class="col me-2 position-relative">
+                        <div class="input-group">
+                          <span class="input-group-text" id="search-box"><i class="bi bi-search"></i></span>
+                          <input type="text" class="form-control" placeholder="Search" aria-label="Search" aria-describedby="search-box" name="q" hx-get="{% url 'search' %}" hx-trigger="keyup changed delay:500ms" hx-target="#search-results">
+                        </div>
+                        <div class="position-absolute w-100" id="search-results"></div>
+                    </div>
+
                     {% if user.is_authenticated %}
                         <div class="dropdown">
                             <a class="d-flex align-items-center text-dark fw-bold text-decoration-none dropdown-toggle"

@@ -1,7 +1,12 @@
 {% extends 'base.html' %}
+{% load static %}
 {% load widget_tweaks %}
 
 {% block title %}Profile{% endblock %}
+
+{% block head_links %}
+<link rel="stylesheet" href="{% static 'flags/sprite.css' %}">
+{% endblock %}
 
 {% block content %}
 <div class="d-flex justify-content-center align-items-center">
@@ -82,9 +87,17 @@
                     {% render_field form.bio class="form-control" %}
                 </div>
                 <div class="mb-3">
-                    {% render_field form.location|add_label_class:"form-label" %}
+                    <label for="id_location" class="form-label">Location:</label>
                     {{ form.location.errors }}
-                    {% render_field form.location class="form-control" %}
+                    <select id="id_location" class="form-select" name="location">
+                        {% for country in form.location.field.choices %}
+                            {% if country.0 == user.location %}
+                            <option value="{{ country.0 }}" selected><span>{{ country.unicode_flag }}</span> {{ country.1 }}</option>
+                            {% else %}
+                            <option value="{{ country.0 }}"><span>{{ country.unicode_flag }}</span> {{ country.1 }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
                 </div>
                 <div class="mb-3">
                     {% render_field form.is_private|add_label_class:"form-check-label" %}
@@ -104,6 +117,7 @@
 
 {% block script %}
 <script>
+
     let userPicture = document.getElementById('userPicture');
     const pictureParent = userPicture.parentElement;
     const avatar = document.getElementById('id_avatar');
@@ -129,6 +143,10 @@
             }
         }
         reader.readAsDataURL(file);
+    });
+
+    $(document).ready(function() {
+        $('#id_location').select2();
     });
 </script>
 {% endblock %}
