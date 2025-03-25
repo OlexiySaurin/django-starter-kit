@@ -7,8 +7,10 @@ crispy-bootstrap5==2024.10
 cryptography==44.0.2
 Django==5.1.6
 django-allauth==65.4.1
+django-countries==7.6.1
 django-crispy-forms==2.3
 django-debug-toolbar==5.0.1
+django-settings-export==1.2.1
 django-widget-tweaks==1.5.0
 idna==3.10
 oauthlib==3.2.2
@@ -19,7 +21,6 @@ PyJWT==2.10.1
 requests==2.32.3
 requests-oauthlib==2.0.0
 sqlparse==0.5.3
+typing_extensions==4.12.2
 tzdata==2025.1
 urllib3==2.3.0
-
-django-countries~=7.6.1
