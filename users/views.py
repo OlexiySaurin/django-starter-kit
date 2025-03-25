@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
@@ -46,15 +47,24 @@ def send_verification(request):
     if user.is_verified:
         return redirect('profile')
     send_email_confirmation(request, user)
+    print("email sent")
     return redirect('profile')
 
-
-def search(request):
-    query = request.GET.get('q')
-    if not query:
-        return HttpResponse("")
-    users = User.objects.filter(username__icontains=query, is_private=False)
+def view_profile(request, username):
+    user = User.objects.get(username=username)
     context = {
-        'users': users
+        'profile_user': user
     }
-    return render(request, 'users/search.html', context)
+    return render(request, 'users/profile_view.html', context)
+
+
+if settings.ENABLE_USER_SEARCH:
+    def search(request):
+        query = request.GET.get('q')
+        if not query:
+            return HttpResponse("")
+        users = User.objects.filter(username__icontains=query, is_private=False)
+        context = {
+            'users': users
+        }
+        return render(request, 'users/search.html', context)

@@ -38,7 +38,6 @@ class Migration(migrations.Migration):
                 ('phone_number', models.CharField(blank=True, max_length=20)),
                 ('is_private', models.BooleanField(default=False)),
                 ('is_verified', models.BooleanField(default=False)),
-                ('color', models.CharField(default=users.models.generate_pastel_color, max_length=7)),
                 ('is_online', models.BooleanField(default=False)),
                 ('last_seen', models.DateTimeField(blank=True, null=True)),
                 ('groups', models.ManyToManyField(blank=True, help_text='The groups this user belongs to. A user will get all permissions granted to each of their groups.', related_name='user_set', related_query_name='user', to='auth.group', verbose_name='groups')),

@@ -5,9 +5,9 @@ from django_countries.widgets import CountrySelectWidget
 class UserForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ['avatar', 'first_name', 'last_name', 'birth_date', 'bio', 'location', 'is_private']
+        fields = ['avatar', 'first_name', 'last_name', 'birth_date', 'gender', 'bio', 'location', 'phone_number', 'website', 'is_private']
         widgets = {
             'birth_date': forms.DateInput(attrs={'type': 'date'}),
             'bio': forms.Textarea(attrs={'rows': 3}),
-            'location': CountrySelectWidget()
+            'location': CountrySelectWidget(layout='{widget}'),
         }

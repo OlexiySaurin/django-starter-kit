@@ -88,6 +88,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django_settings_export.settings_export',
             ],
         },
     },
@@ -146,7 +147,8 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [
-    BASE_DIR / "static"
+    BASE_DIR / "static",
+    ".venv/Lib/site-packages/django_countries/static"
 ]
 
 MEDIA_URL = '/media/'
@@ -164,3 +166,11 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_LOGIN_METHODS = {'email'}
 
 LOGIN_REDIRECT_URL = "/"
+
+# custom settings
+
+ENABLE_USER_SEARCH = True
+
+SETTINGS_EXPORT = [
+    'ENABLE_USER_SEARCH'
+]

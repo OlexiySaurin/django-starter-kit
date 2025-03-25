@@ -1,7 +1,7 @@
 <ul class="list-group">
      {% for user in users %}
     <li class="list-group-item">
-        <a class="text-center text-decoration-none text-dark">
+        <a class="text-center text-decoration-none text-dark" href="{% url 'view-profile' user.username %}">
             <div class="d-flex align-items-center justify-content-center">
                 {% if user.avatar %}
                 <img src="{{ user.avatar.url }}" alt="Profile Picture" class="img-fluid rounded-circle border border-secondary mt-1 mb-1" width="27">

@@ -2,115 +2,141 @@
 {% load static %}
 {% load widget_tweaks %}
 
-{% block title %}Profile{% endblock %}
+{% block title %}Profile Settings{% endblock %}
 
 {% block head_links %}
 <link rel="stylesheet" href="{% static 'flags/sprite.css' %}">
+    <link rel="stylesheet" href="{% static 'flags/sprite-hq.css' %}">
 {% endblock %}
 
 {% block content %}
 <div class="d-flex justify-content-center align-items-center">
-    <div style="max-width: 700px; width: 100%;">
-        <div class="card-body">
-            <h2 class="mb-3 text-center">Edit Profile</h2>
-
-            <form method="post" action="{% url 'profile' %}" enctype="multipart/form-data">
-                {% csrf_token %}
-                {{ form.non_field_errors }}
-                <div class="row mb-4">
-                        <!-- Avatar Section -->
-                        <div class="col">
-                            {% if user.avatar %}
-                                <img id="userPicture" src="{{ user.avatar.url }}" alt="Profile Picture" class="img-fluid rounded-circle border border-secondary" width="150">
-                            {% else %}
-                                <div id="userPicture" class="d-flex align-items-center justify-content-center rounded-circle text-white" style="background-color: {{ user.color }}; width: 150px; height: 150px;">
-                                    <span class="fw-bold fs-3">{{ user.first_name|first|upper }}{{ user.last_name|first|upper }}</span>
-                                </div>
-                            {% endif %}
-                            <div class="mt-3">
-                                <label for="id_avatar" class="form-label">Change Avatar: </label>
-                                {{ form.avatar }}
-                            </div>
-                        <div class="mb-3 mt-3">
-                                <label for="id_username" class="form-label">Username:</label>
-                                <input id="id_username" type="text" class="form-control" value="{{ user.username }}" disabled>
-                            </div>
-                            <div class="mb-3">
-                                <label for="id_email" class="form-label">Email:</label>
-                                <div class="d-flex justify-content-between align-items-center">
-                                 <input id="id_email" type="email" class="form-control" value="{{ user.email }}" disabled>
-{#                                <a href="{% url 'account_email' %}" class="btn btn-warning">Change email</a>#}
-                                </div>
-                            </div>
-                        <hr class="mt-4">
-                        <div class="mb-3">
-                    {% if user.is_verified %}
-                        <span class="text-success">
-                             <i class="bi bi-check-circle-fill"></i> Verified
-                         </span>
-                    {% else %}
-                        <div class="d-flex justify-content-between align-items-center">
-                         <span class="text-danger">
-                             <i class="bi bi-x-circle-fill"></i> Not verified
-                         </span>
-                            <a href="{% url 'send-verification' %}" class="btn btn-warning">Verify email</a>
-                        </div>
-
-                    {% endif %}
-
-                </div>
-                        <div class="mb-3 d-flex justify-content-between align-items-center">
-                            <span>Password:</span><a href="{% url 'account_change_password' %}" class="btn btn-secondary">Change password</a>
-                        </div>
-                        </div>
-
-                        <!-- Username and Email Section -->
-                        <div class="col">
-<div class="mb-3">
-                    {% render_field form.first_name|add_label_class:"form-label" %}
-                    {{ form.first_name.errors }}
-                    {% render_field form.first_name class="form-control" %}
-                </div>
-                <div class="mb-3">
-                    {% render_field form.last_name|add_label_class:"form-label" %}
-                    {{ form.last_name.errors }}
-                    {% render_field form.last_name class="form-control" %}
-                </div>
-                <div class="mb-3">
-                    {% render_field form.birth_date|add_label_class:"form-label" %}
-                    {{ form.birth_date.errors }}
-                    {% render_field form.birth_date class="form-control" %}
-                </div>
-                <div class="mb-3">
-                    {% render_field form.bio|add_label_class:"form-label" %}
-                    {{ form.bio.errors }}
-                    {% render_field form.bio class="form-control" %}
-                </div>
-                <div class="mb-3">
-                    <label for="id_location" class="form-label">Location:</label>
-                    {{ form.location.errors }}
-                    <select id="id_location" class="form-select" name="location">
-                        {% for country in form.location.field.choices %}
-                            {% if country.0 == user.location %}
-                            <option value="{{ country.0 }}" selected><span>{{ country.unicode_flag }}</span> {{ country.1 }}</option>
-                            {% else %}
-                            <option value="{{ country.0 }}"><span>{{ country.unicode_flag }}</span> {{ country.1 }}</option>
-                            {% endif %}
-                        {% endfor %}
-                    </select>
-                </div>
-                <div class="mb-3">
-                    {% render_field form.is_private|add_label_class:"form-check-label" %}
-                    {% render_field form.is_private class="form-check-input" %}
-                </div>
+    <div style="max-width: 1400px; width: 100%;">
+        <form method="post" action="{% url 'profile' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
 
 
+            <div class="row">
+            {#  left panel - profile picture #}
+                <div class="col-md-3">
+                    <div class="card m-2">
+                        <div class="card-header">Profile Picture</div>
+                         <img src="{{ user.avatar.url }}" id="userPicture" class="card-img-top img-fluid rounded-circle m-auto border border-5 mt-4" style="max-width: 60%; max-height:60%;" alt="{{ user.username }} picture">
+                        <div class="card-body">
+
+                            {{ form.avatar.errors }}
+                            {% render_field form.avatar class="form-control form-control-sm" %}
                         </div>
                     </div>
+                </div>
 
-                <button id="submitBtn" type="submit" class="btn btn-primary w-100">Save changes</button>
-            </form>
-        </div>
+                <div class="col-md-8">
+                    <div class="card m-2">
+                        <div class="card-header">Personal Info</div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <div class="row row-cols-1 row-cols-md-2">
+                                    <div class="col">
+                                        <label for="id_first_name" class="form-label">First Name:</label>
+                                        {% render_field form.first_name class="form-control" %}
+                                    </div>
+                                    <div class="col">
+                                        <label for="id_last_name" class="form-label">Last Name:</label>
+                                        {% render_field form.last_name class="form-control" %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label for="id_username" class="col-sm-2 col-form-label">Username:</label>
+                                <div class="col-sm-10">
+                                    <div class="input-group">
+                                      <span class="input-group-text" id="span_username">@</span>
+                                      <input type="text" class="form-control" id="id_username" placeholder="Username" aria-label="Username" aria-describedby="span_username" value="{{ user.username }}" disabled>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label for="id_email" class="col-sm-2 col-form-label">Email:</label>
+                                <div class="col-sm-10">
+                                  <div class="input-group">
+                                      <span class="input-group-text" id="span_email"><i class="bi bi-envelope-fill"></i></span>
+                                      <input type="email" class="form-control" id="id_email" placeholder="Email" aria-label="Email" aria-describedby="span_email" value="{{ user.email }}" disabled>
+                                          {% if user.email.verified %}
+                                              <span class="input-group-text bg-success text-light"><i class="bi bi-check-lg"></i> Verified </span>
+                                          {% else %}
+                                              <span class="input-group-text bg-danger text-light"><i class="bi bi-x-lg"></i> Not Verified </span>
+                                              <a href="{% url 'send-verification' %}" class="btn btn-light btn-outline-primary input-group-text">Send email verification</a>
+                                          {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        {% if form.gender %}
+                            <div class="mb-3 row">
+                                <label for="id_gender" class="col-sm-2 col-form-label">Gender:</label>
+                                <div class="col-sm-10">
+                                  {% render_field form.gender class="form-select" %}
+                                </div>
+                            </div>
+                        {% endif %}
+                        {% if form.bio %}
+                            <div class="mb-3 row">
+                                <label for="id_bio" class="col-sm-2 col-form-label">Bio:</label>
+                                <div class="col-sm-10">
+                                    {% render_field form.bio class="form-control" placeholder="Write short bio..." %}
+                                </div>
+                            </div>
+                        {% endif %}
+                        {% if form.birth_date %}
+                            <div class="mb-3 row">
+                                <label for="id_birth_date" class="col-sm-2 col-form-label">Birth Date:</label>
+                                <div class="col-sm-10">
+                                    {% render_field form.birth_date class="form-control" type="date" %}
+                                </div>
+                            </div>
+                        {% endif %}
+                        {% if form.location %}
+                             <div class="mb-3 row">
+                                <label for="id_location" class="col-sm-2 col-form-label">Location:</label>
+                                <div class="col-sm-10">
+                                    {% render_field form.location class="form-select" %}
+                                </div>
+                            </div>
+                        {% endif %}
+                        {% if form.phone_number %}
+                             <div class="mb-3 row">
+                                <label for="id_phone_number" class="col-sm-2 col-form-label">Phone:</label>
+                                <div class="col-sm-10">
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bi bi-telephone-fill"></i></span>
+                                    {% render_field form.phone_number class="form-control" %}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                        {% if form.website %}
+                             <div class="mb-3 row">
+                                <label for="id_website" class="col-sm-2 col-form-label">Website:</label>
+                                <div class="col-sm-10">
+                                    <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-link-45deg"></i></span>
+                                    {% render_field form.website class="form-control" %}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        {% render_field form.is_private|add_label_class:"form-check-label" %}
+                        {% render_field form.is_private class="form-check-input" %}
+                    </div>
+                </div>
+            </div>
+
+
+            <button id="submitBtn" type="submit" class="btn btn-primary w-100">Save changes</button>
+        </form>
     </div>
 </div>
 {% endblock %}
@@ -143,10 +169,6 @@
             }
         }
         reader.readAsDataURL(file);
-    });
-
-    $(document).ready(function() {
-        $('#id_location').select2();
     });
 </script>
 {% endblock %}
