@@ -2,10 +2,10 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse, Http404
 from django.views.decorators.http import require_http_methods
 from allauth.account.utils import send_email_confirmation
-from users.forms import UserForm
+from users.forms import UserForm, UserReadonlyForm
 from users.models import User
 
 
@@ -52,8 +52,13 @@ def send_verification(request):
 
 def view_profile(request, username):
     user = User.objects.get(username=username)
+    if user.is_private:
+        if not request.user.is_authenticated or request.user != user:
+            raise Http404
+    form = UserReadonlyForm(instance=user)
     context = {
-        'profile_user': user
+        'profile_user': user,
+        'form': form
     }
     return render(request, 'users/profile_view.html', context)
 

@@ -11,3 +11,18 @@ class UserForm(forms.ModelForm):
             'bio': forms.Textarea(attrs={'rows': 3}),
             'location': CountrySelectWidget(layout='{widget}'),
         }
+
+class UserReadonlyForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name', 'birth_date', 'gender', 'bio', 'location', 'phone_number', 'website']
+        widgets = {
+            'first_name': forms.TextInput(),
+            'last_name': forms.TextInput(),
+            'birth_date': forms.DateInput(attrs={'type': 'date'}),
+            'gender': forms.TextInput(),
+            'bio': forms.Textarea(attrs={'rows': 3, 'readonly': 'readonly', 'class': 'form-control-plaintext'}),
+            'location': CountrySelectWidget(layout='{widget}', attrs={"disabled": "true"}),
+            'phone_number': forms.TextInput(),
+            'website': forms.TextInput(),
+        }

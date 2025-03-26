@@ -62,7 +62,7 @@
                                   <div class="input-group">
                                       <span class="input-group-text" id="span_email"><i class="bi bi-envelope-fill"></i></span>
                                       <input type="email" class="form-control" id="id_email" placeholder="Email" aria-label="Email" aria-describedby="span_email" value="{{ user.email }}" disabled>
-                                          {% if user.email.verified %}
+                                          {% if user.emailaddress_set.first.verified %}
                                               <span class="input-group-text bg-success text-light"><i class="bi bi-check-lg"></i> Verified </span>
                                           {% else %}
                                               <span class="input-group-text bg-danger text-light"><i class="bi bi-x-lg"></i> Not Verified </span>

@@ -103,7 +103,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': "postgresdb",
+        'NAME': "phmanagerdb",
         'USER': "postgres",
         'PASSWORD': "12345",
         'HOST': "localhost",
